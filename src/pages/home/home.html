@@ -4,7 +4,7 @@
       Unifynd Crypto
     </ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="openSettings()">
+      <button ion-button icon-only (click)="openSettings($event)">
         <ion-icon name="cog"></ion-icon>
       </button>
     </ion-buttons>
@@ -26,12 +26,16 @@
             <h5 class="data"> {{CryptData[option.type].volume}}</h5>
           </ion-col>|
           <ion-col>
-            <div *ngIf="CryptData[option.type].perChange >= 0">
-                <h4 style="color:green"> {{CryptData[option.type].perChange}}</h4>
-            </div>
-            <div *ngIf="CryptData[option.type].perChange < 0">
-                <h3 style="color:red"> {{CryptData[option.type].perChange}}</h3>
-            </div>
+            <ion-row>
+            <ion-col >
+                <h4 *ngIf="CryptData[option.type].perChange >= 0" style="color:green"> +{{CryptData[option.type].perChange}} </h4> 
+                <h3 *ngIf="CryptData[option.type].perChange < 0" style="color:red"> {{CryptData[option.type].perChange}} </h3>
+            </ion-col>
+            <ion-col >
+                <ion-icon style="color:green" *ngIf="CryptData[option.type].perChange >= 0" name ="arrow-round-up"></ion-icon> 
+                <ion-icon style="color:red" *ngIf="CryptData[option.type].perChange < 0" name ="arrow-round-down"></ion-icon>
+            </ion-col>
+          </ion-row>
             </ion-col>
         </ion-row>
       </ion-slide>

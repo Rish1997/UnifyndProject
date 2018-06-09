@@ -19,7 +19,6 @@ export class ValueFetchProvider {
         for(let key in data["data"]){
           arr.push({type : data["data"][key].symbol , price : data["data"][key].quotes.USD.price , perChange : data["data"][key].quotes.USD.percent_change_1h , volume : data["data"][key].quotes.USD.volume_24h}); 
         }
-        console.log(arr)
         resolve(arr);
       })
     })

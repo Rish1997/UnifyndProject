@@ -1,10 +1,16 @@
-<ion-header>
+<!-- <ion-header>
   <ion-navbar>
     <ion-title>Settings</ion-title>
   </ion-navbar>
-</ion-header>
+</ion-header> -->
 
 
-<ion-content padding>
+<ion-content >
+  <ion-item>
+    <ion-label>Currency</ion-label>
+    <ion-select (ionSelect)="currencySelected()">
+      <ion-option *ngFor="let currency of Currencies">{{currency}}</ion-option>
+    </ion-select>
+  </ion-item>
 
 </ion-content>

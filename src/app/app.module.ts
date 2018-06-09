@@ -13,6 +13,7 @@ import { ValueFetchProvider } from '../providers/value-fetch/value-fetch';
 import { ComponentsModule } from '../components/components.module';
 import { ExchangeComponent } from '../components/exchange/exchange';
 import { SettingsPageModule } from '../pages/settings/settings.module';
+import { TransactProvider } from '../providers/transact/transact';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { SettingsPageModule } from '../pages/settings/settings.module';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ValueFetchProvider
+    ValueFetchProvider,
+    TransactProvider
   ]
 })
 export class AppModule {}

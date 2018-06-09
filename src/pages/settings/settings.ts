@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the SettingsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { ValueFetchProvider } from './../../providers/value-fetch/value-fetch';
 
 @IonicPage()
 @Component({
@@ -15,11 +9,20 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class SettingsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  Currencies = [];
+
+  constructor(public navCtrl: NavController, public navParams: NavParams , public vfPro : ValueFetchProvider) {
+    this.vfPro.fetchCurrencies().then((data) => {
+      this.Currencies = data["currency"];
+    })
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SettingsPage');
+    
+  }
+
+  currencySelected(){
+
   }
 
 }
