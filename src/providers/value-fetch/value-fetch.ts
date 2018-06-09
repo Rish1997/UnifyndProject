@@ -4,17 +4,25 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ValueFetchProvider {
-  url: string = "https://blockchain.info/ticker";
+  url: string = "https://api.coinmarketcap.com/v2/ticker/?limit=10";
 
   constructor(public http: HttpClient) {
 
   }
 
-  fetch() {
-    // this.http.get(this.url).subscribe(data => {
-    //   console.log(data);
-    // })
-    console.log("Just uncomment above section. This is working fine");
+  fetchCrypts() {
+    let arr = [];
+    return new Promise((resolve,reject) => {
+      
+      this.http.get(this.url).subscribe(data => {
+        
+        for(let key in data["data"]){
+          arr.push({type : data["data"][key].symbol , price : data["data"][key].quotes.USD.price , perChange : data["data"][key].quotes.USD.percent_change_1h , volume : data["data"][key].quotes.USD.volume_24h}); 
+        }
+        console.log(arr)
+        resolve(arr);
+      })
+    })
   }
   fetchCurrencies() {
     return new Promise((resolve, reject) => {

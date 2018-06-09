@@ -4,60 +4,55 @@
       Unifynd Crypto
     </ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="openSettings()"><ion-icon name="cog"></ion-icon></button>
+      <button ion-button icon-only (click)="openSettings()">
+        <ion-icon name="cog"></ion-icon>
+      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
 
-  <ion-card height="10px" color="black" class="div-odd">
+  <ion-card height="10px" color="black" class="div-odd" padding-bottom padding-top>
     <ion-slides>
       <ion-slide *ngFor="let option of YourCoins">
-        <div *ngFor="let anotherOption of YourCoins">
-          <div *ngIf="option.type !== anotherOption.type">
-              <h6 class="small-heading"> {{option.type}}/{{anotherOption.type}}</h6>
-              <ion-row>
-                <ion-col width-40>
-                  <ion-item>
-                    <ion-label class="SmallFont">Currency</ion-label>
-                    <ion-select (ionChange)="valuesSelected($event)">
-                      <ion-option *ngFor="let option of CurrencyOptions">{{option}}</ion-option>
-                    </ion-select>
-                  </ion-item>
-                </ion-col>
-                <ion-col width-40>
-                  <ion-item>
-                    <ion-select (ionChange)="valuesSelected($event)">
-                      <ion-option>Bye</ion-option>
-                    </ion-select>
-                  </ion-item>
-                </ion-col>
-              </ion-row>
-          </div>
-        </div>
+        <ion-row>
+          <ion-col>
+              <h6 class="small-heading"> USD/{{option.type}}</h6>
+              <h5 class="data"> {{CryptData[option.type].price}}</h5>
+          </ion-col>|
+          <ion-col>
+            <h6 class="small-heading"> Volume {{option.type}} </h6>
+            <h5 class="data"> {{CryptData[option.type].volume}}</h5>
+          </ion-col>|
+          <ion-col>
+            <div *ngIf="CryptData[option.type].perChange >= 0">
+                <h4 style="color:green"> {{CryptData[option.type].perChange}}</h4>
+            </div>
+            <div *ngIf="CryptData[option.type].perChange < 0">
+                <h3 style="color:red"> {{CryptData[option.type].perChange}}</h3>
+            </div>
+            </ion-col>
+        </ion-row>
       </ion-slide>
     </ion-slides>
-   
-  </ion-card>
-  <div>
-  <ion-card>
-    <table>
-      <tr>
-        <td [attr.rowspan]="YourCoins.length+1">
-          You Have :
-        </td>
-      </tr>
-      <tr *ngFor="let coin of YourCoins">
-        <td>
-          <li margin-left padding-left>
-            {{coin.number}} {{coin.type}}
-          </li>
-        </td>
-      </tr>
-    </table>
   </ion-card>
 
-  </div>
+    <ion-card border="Solid" class="div-even" padding-bottom padding-top>
+      <table>
+        <tr>
+          <td [attr.rowspan]="YourCoins.length +1">
+            You Have :
+          </td>
+        </tr>
+        <tr *ngFor="let coin of YourCoins">
+          <td>
+            <li margin-left padding-left>
+              {{coin.number}} {{coin.type}}
+            </li>
+          </td>
+        </tr>
+      </table>
+    </ion-card>
 
 </ion-content>
