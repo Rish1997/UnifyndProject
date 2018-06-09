@@ -62,6 +62,17 @@ exports.addPerson = functions.https.onRequest((request, response) => {
     })
 })
 
+exports.getPerson = functions.https.onRequest((request,response) => {
+    const name = request.body.name;
+    
+    db.collection("CryptData").doc("PersonPort").get().then((doc) => {
+        portfolioData = doc.data();
+        let person = portfolioData[name];
+        if(person !== undefined) return response.send(person);
+        else response("No Such Person Found");
+    })
+})
+
 exports.buyCoin = functions.https.onRequest((request, response) => {
 
     const buyer = request.body.name;

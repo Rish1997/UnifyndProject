@@ -16,7 +16,7 @@ export class NewsPage {
 
   ionViewDidLoad() {
     this.http.get("https://newsapi.org/v2/everything?sources=crypto-coins-news&apiKey=b8ebac75c18945c2a9526038fb90d265").subscribe((news) => {
-      this.newsData = news.articles;
+      this.newsData = news["articles"];
       console.log(this.newsData);
     })
   }
