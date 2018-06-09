@@ -1,0 +1,19 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>News</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card *ngFor="let article of newsData">
+    <ion-card-header>
+      {{article.title}}
+    </ion-card-header>
+    <ion-card-content>
+      {{article.description}}
+    </ion-card-content>
+  </ion-card>
+</ion-content>

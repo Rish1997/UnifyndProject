@@ -15,9 +15,9 @@ export class ValueFetchProvider {
     return new Promise((resolve,reject) => {
       
       this.http.get(this.url).subscribe(data => {
-        
+        console.log(data);
         for(let key in data["data"]){
-          arr.push({type : data["data"][key].symbol , price : data["data"][key].quotes.USD.price , perChange : data["data"][key].quotes.USD.percent_change_1h , volume : data["data"][key].quotes.USD.volume_24h}); 
+          arr.push({name : data["data"][key].name ,type : data["data"][key].symbol , price : data["data"][key].quotes.USD.price , perChange : data["data"][key].quotes.USD.percent_change_1h , volume : data["data"][key].quotes.USD.volume_24h}); 
         }
         resolve(arr);
       })

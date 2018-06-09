@@ -9,54 +9,134 @@
       </button>
     </ion-buttons>
   </ion-navbar>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="segment" color="secondary">
+      <ion-segment-button value="camera">
+        <ion-icon name="eye"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="bookmark">
+        <ion-icon name="bookmark"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="book">
+        <ion-icon name="book"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <div *ngIf="segment == 'camera'">
 
-  <ion-card height="10px" color="black" class="div-odd" padding-bottom padding-top>
-    <ion-slides>
-      <ion-slide *ngFor="let option of YourCoins">
-        <ion-row>
-          <ion-col>
+
+    <ion-card height="10px" color="black" class="div-odd" padding-bottom padding-top>
+      <ion-slides>
+        <ion-slide *ngFor="let option of YourCoins">
+          <ion-row>
+            <ion-col>
               <h6 class="small-heading"> USD/{{option.type}}</h6>
               <h5 class="data"> {{CryptData[option.type].price}}</h5>
-          </ion-col>|
-          <ion-col>
-            <h6 class="small-heading"> Volume {{option.type}} </h6>
-            <h5 class="data"> {{CryptData[option.type].volume}}</h5>
-          </ion-col>|
-          <ion-col>
-            <ion-row>
-            <ion-col >
-                <h4 *ngIf="CryptData[option.type].perChange >= 0" style="color:green"> +{{CryptData[option.type].perChange}} </h4> 
-                <h3 *ngIf="CryptData[option.type].perChange < 0" style="color:red"> {{CryptData[option.type].perChange}} </h3>
-            </ion-col>
-            <ion-col >
-                <ion-icon style="color:green" *ngIf="CryptData[option.type].perChange >= 0" name ="arrow-round-up"></ion-icon> 
-                <ion-icon style="color:red" *ngIf="CryptData[option.type].perChange < 0" name ="arrow-round-down"></ion-icon>
+            </ion-col>|
+            <ion-col>
+              <h6 class="small-heading"> Volume {{option.type}} </h6>
+              <h5 class="data"> {{CryptData[option.type].volume}}</h5>
+            </ion-col>|
+            <ion-col>
+              <ion-row>
+                <ion-col>
+                  <h4 *ngIf="CryptData[option.type].perChange >= 0" style="color:green"> +{{CryptData[option.type].perChange}} </h4>
+                  <h3 *ngIf="CryptData[option.type].perChange < 0" style="color:red"> {{CryptData[option.type].perChange}} </h3>
+                </ion-col>
+                <ion-col>
+                  <ion-icon style="color:green" *ngIf="CryptData[option.type].perChange >= 0" name="arrow-round-up"></ion-icon>
+                  <ion-icon style="color:red" *ngIf="CryptData[option.type].perChange < 0" name="arrow-round-down"></ion-icon>
+                </ion-col>
+              </ion-row>
             </ion-col>
           </ion-row>
-            </ion-col>
-        </ion-row>
-      </ion-slide>
-    </ion-slides>
-  </ion-card>
-
-    <ion-card border="Solid" class="div-even" padding-bottom padding-top>
-      <table>
-        <tr>
-          <td [attr.rowspan]="YourCoins.length +1">
-            You Have :
-          </td>
-        </tr>
-        <tr *ngFor="let coin of YourCoins">
-          <td>
-            <li margin-left padding-left>
-              {{coin.number}} {{coin.type}}
-            </li>
-          </td>
-        </tr>
-      </table>
+        </ion-slide>
+      </ion-slides>
     </ion-card>
 
-</ion-content>
+    <ion-card border="Solid" class="div-even" padding-bottom padding-top>
+      <ion-row>
+        <ion-col width-90>
+          <table>
+            <tr>
+              <td [attr.rowspan]="YourCoins.length +1">
+                You Have :
+              </td>
+            </tr>
+            <tr *ngFor="let coin of YourCoins">
+              <td>
+                <li margin-left padding-left>
+                  {{coin.number}} {{coin.type}}
+                </li>
+              </td>
+            </tr>
+          </table>
+        </ion-col>
+        <!-- <ion-col width-10>
+            Profit :<div style="color : green"> 2% </div>
+        </ion-col> -->
+      </ion-row>
+    </ion-card>
+    <ion-card>
+      <ion-row>
+        <ion-item>
+          <ion-label>Crypto</ion-label>
+          <ion-select (ionChange)="CoinChanged($event)">
+            <ion-option value="Bitcoin">Bitcoin</ion-option>
+            <ion-option value="Bitcoin Cash">Bitcoin Cash</ion-option>
+            <ion-option value="Ethereum">Ethereum</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-row>
+
+
+      <ion-buttons>
+        <ion-row>
+          <ion-col>
+            <button full ion-button round color="secondary" (click)="buyCoin()">BUY</button>
+          </ion-col>
+          <ion-col>
+            <button full ion-button round color="danger">Sell</button>
+          </ion-col>
+        </ion-row>
+      </ion-buttons>
+    </ion-card>
+  </div>
+  <div *ngIf="segment=='bookmark'">
+    <button ion-button full color="secondary" (click)="changePage()">Want Some News?</button>
+
+    <ion-card>
+      <ion-card-header>
+        <h5>Worry about Taxes!! We got you covered!</h5>
+      </ion-card-header>
+      <ion-card-content>
+        <button ion-button (click)="ShowProfits()">Your Profits </button>
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="textClick">
+      <ion-card-content>
+        Running through all your transactions on the go, We continuosly keeps track of your profits and Losses. but that doesn't
+        end here, We support you find the tax deductions or other brokerage charges easily.
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>Some Insights</ion-card-header>
+      <ion-card-content>
+        <li>You Bought your bitcoins for an Exchange rate of 7500 USD. The Exchange rate of Ethereum is 600 USD. but BTC/ETH is fluctuating at 12.8, Would you like to exchange your bitcoins for Ethereum?</li>
+        <button ion-button color="secondary">BUY</button>
+        <button ion-button color="danger">Skip</button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <div *ngIf="segment=='book'">
+    <h3>Your Transactions</h3>
+      <ion-card *ngFor="let trans of transactionData">
+        <div *ngIf="trans.Currency != undefined">
+          <ion-card-title left>{{trans.Currency}}</ion-card-title>
+          <ion-card-content>{{trans.Volume}} volume bought at the rate of {{trans.BuyingRate}}.</ion-card-content>
+        </div>
+      </ion-card>
+  </div>

@@ -1,3 +1,4 @@
+import { NewsPage } from './../pages/news/news';
 // import { SettingsPageModule } from './../pages/settings/settings.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -14,17 +15,19 @@ import { ComponentsModule } from '../components/components.module';
 import { ExchangeComponent } from '../components/exchange/exchange';
 import { SettingsPageModule } from '../pages/settings/settings.module';
 import { TransactProvider } from '../providers/transact/transact';
+import { NewsPageModule } from '../pages/news/news.module';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
+    HomePage
     // ExchangeComponent
   ],
   imports: [
     CommonModule,
     BrowserModule,
     SettingsPageModule,
+    NewsPageModule,
     ComponentsModule,
     HttpClientModule,
     IonicModule.forRoot(MyApp)
