@@ -1,17 +1,8 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
-// Initializind admin and firestore variable
-
 admin.initializeApp(functions.config().firebase);
 var db = admin.firestore();
-
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
 
 
 exports.addCurrency = functions.https.onRequest((request, response) => {
@@ -49,7 +40,7 @@ exports.addPerson = functions.https.onRequest((request, response) => {
     const name = request.body.name;
     const money = request.body.money;
     const currencies = {
-        "BTC": 0
+        BTC: 0
     };
     const port = {};
     port[name] = {
@@ -83,40 +74,108 @@ exports.buyCoin = functions.https.onRequest((request, response) => {
         if (doc.exists) {
             var temp = doc.data();
             currencyData = temp['currencyData'];
-            console.log(currencyData);
-            console.log(currency);
-            currencyData[currency].SoldVolume += volume;
-            currencyData[currency].TotalVolume -= volume;
-            db.collection("CryptData").doc("Currencies").set({
-                currencyData
-            });
+            if (currencyData[currency].TotalVolume >= volume) {
+
+                currencyData[currency].SoldVolume += volume;
+                currencyData[currency].TotalVolume -= volume;
+                db.collection("CryptData").doc("Currencies").set(currencyData);
 
 
-            db.collection("CryptData").doc("PersonPort").get().then((doc) => {
-                const persons = doc.data();
-                console.log(volume + " <= " +  currencyData[currency].TotalVolume + " && " +  persons[buyer].Money + " >= " +  volume + " * " + buyingRate)
-                if (volume <= currencyData[currency].TotalVolume && persons[buyer].Money >= volume * buyingRate) {
-                    persons[buyer].Money -= (volume * buyingRate);
-                    persons[buyer].portfolio[currencyData[currency]["Symbol"]] += volume;
-                    var temp = persons[buyer].Transactions;
-                    var date = Date();
-                    temp[date] = { type: "Buy", Currency: "BTC", Volume: volume, BuyingRate: buyingRate };
-                    persons[buyer].Transactions = temp;
+                db.collection("CryptData").doc("PersonPort").get().then((doc) => {
+                    const persons = doc.data();
+                    console.log(volume + " <= " + currencyData[currency].TotalVolume + " && " + persons[buyer].Money + " >= " + volume + " * " + buyingRate)
+                    if (volume <= currencyData[currency].TotalVolume && persons[buyer].Money >= volume * buyingRate) {
+                        persons[buyer].Money -= (volume * buyingRate);
+                        persons[buyer].portfolio[currencyData[currency]["Symbol"]] += volume;
+                        var temp = persons[buyer].Transactions;
+                        var date = Date();
+                        temp[date] = { type: "Buy", Currency: currencyData[currency]["Symbol"], Volume: volume, BuyingRate: buyingRate };
+                        persons[buyer].Transactions = temp;
 
-                    db.collection("CryptData").doc("PersonPort").set(persons).then((doc) => {
-                        console.log("Transaction Completed");
-                        response.status(200).send("Transaction Complete");
-                    }).catch((reason) => {
-                        console.log("Failed due to " + reason);
-                        response.send("Transaction Failed!");
-                    })
-                }
-                else {
-                    response.send("Not Enough Money or Volume!!");
-                }
-            })
+                        db.collection("CryptData").doc("PersonPort").set(persons).then((doc) => {
+                            console.log("Transaction Completed");
+                            response.status(200).send("Transaction Complete");
+                        }).catch((reason) => {
+                            console.log("Failed due to " + reason);
+                            response.send("Transaction Failed!");
+                        })
+                    }
+                    else {
+                        response.send("Not Enough Money or Volume!!");
+                    }
+                })
+            }
+            else {
+                response.send("Invalid Amount!");
+            }
         }
     })
 })
 
-// exports.sellCoin = functions.https
+exports.sellCoin = functions.https.onRequest((request, response) => {
+    const seller = request.body.name;
+    const currency = request.body.currName;
+    const SellingRate = request.body.rate;
+    const volume = request.body.value;
+    var currencyData;
+
+    db.collection("CryptData").doc("Currencies").get().then((doc) => {
+        if (doc.exists) {
+            var temp = doc.data();
+            // console.log(temp)
+            currencyData = temp;
+            // console.log(currencyData);
+            if (currencyData[currency].SoldVolume >= volume) {
+                currencyData[currency].SoldVolume -= volume;
+                currencyData[currency].TotalVolume += volume;
+                db.collection("CryptData").doc("Currencies").set(currencyData);
+
+                db.collection("CryptData").doc("PersonPort").get().then((doc1) => {
+                    const persons = doc1.data();
+                    console.log(volume + " <= " + currencyData[currency].SoldVolume);
+
+                    if (volume <= currencyData[currency].SoldVolume) {
+                        persons[seller].Money += (volume * SellingRate);
+                        console.log(currencyData);
+                        persons[seller].portfolio[currencyData[currency]["Symbol"]] += volume;
+
+                        var temp = persons[seller].Transactions;
+                        var date = Date();
+                        temp[date] = { type: "Sell", Currency: currencyData[currency]["Symbol"], Volume: volume, SellingRate: SellingRate };
+                        persons[seller].Transactions = temp;
+
+                        var profit = {};
+
+                        for (let transaction in persons[seller].Transactions) {
+                            if (profit[transaction.Currency] == undefined) profit[transaction.Currency] = 0;
+                            if (transaction.type == "Buy") {
+                                profit[transaction.Currency] -= transaction.Volume * transaction.BuyingRate;
+                            }
+                            else {
+                                profit[transaction.Currency] += transaction.Volume * transaction.SellingRate;
+                            }
+                        }
+
+                        persons[seller].Transactions.profit = profit;
+
+                        db.collection("CryptData").doc("PersonPort").set(persons).then((doc) => {
+                            console.log("Transaction Completed");
+                            response.status(200).send("Transaction Complete");
+                        }).catch((reason) => {
+                            console.log("Failed due to " + reason);
+                            response.send("Transaction Failed!");
+                        })
+
+                    }
+                    else {
+                        response.send("You do not have enough Volume inside");
+                    }
+                })
+            }
+            else {
+                response.send("You do not have enough Volume");
+            }
+        }
+    })
+
+})
