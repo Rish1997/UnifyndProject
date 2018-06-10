@@ -1,5 +1,6 @@
 <ion-header>
   <ion-navbar color="navbar">
+    <ion-icon name="logo-bitcoin" style="color:white"></ion-icon>
     <ion-title>
       Unifynd Crypto
     </ion-title>
@@ -20,6 +21,9 @@
       <ion-segment-button value="book">
         <ion-icon name="book"></ion-icon>
       </ion-segment-button>
+      <ion-segment-button value="wallet">
+          <ion-icon name="card"></ion-icon>
+        </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
 </ion-header>
@@ -106,8 +110,7 @@
     </ion-card>
   </div>
   <div *ngIf="segment=='bookmark'">
-    <button ion-button full color="secondary" (click)="changePage()">Want Some News?</button>
-
+    
     <ion-card>
       <ion-card-header>
         <h5>Worry about Taxes!! We got you covered!</h5>
@@ -116,6 +119,11 @@
         <button ion-button (click)="ShowProfits()">Your Profits </button>
       </ion-card-content>
     </ion-card>
+    
+    <ion-card padding>
+        <button ion-button full round color="dark" (click)="changePage()">Today's Headlines?</button>
+    </ion-card>
+
     <ion-card *ngIf="textClick">
       <ion-card-content>
         Running through all your transactions on the go, We continuosly keeps track of your profits and Losses. but that doesn't
@@ -140,3 +148,11 @@
         </div>
       </ion-card>
   </div>
+  <div *ngIf="segment=='wallet'">
+    <h2>Your Portfolio Includes</h2>
+    <ion-card *ngFor="let currencies of portfolio">
+      <ion-card-header>{{currencies}}</ion-card-header>
+      <ion-card-content></ion-card-content>
+    </ion-card>
+  </div>
+  

@@ -22,11 +22,13 @@ export class HomePage {
   segment : any = "camera";
   textClick = false;
   transactionData = [];
+  portfolio = [];
 
   constructor(public navCtrl: NavController, public vfPro : ValueFetchProvider, public popoverCtrl: PopoverController, public trans : TransactProvider) {
     
     this.compareValues();
     this.getMyCoins();
+    
 
     for(let index in this.Currencies){
       this.CryptData[this.Currencies[index]] = {type : "" , price : "" , perChange : "" , volume : ""};
@@ -65,7 +67,11 @@ export class HomePage {
       for(let i in this.personData["transactions"]){
         this.transactionData.push(this.personData["transactions"][i]);
       }
+      for(let j in this.personData['portfolio']){
+        this.portfolio.push(j)
+      }
       console.log(this.transactionData);
+      console.log(this.portfolio)
       console.log(this.personData)
     })
   }
