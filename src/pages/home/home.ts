@@ -23,6 +23,8 @@ export class HomePage {
   textClick = false;
   transactionData = [];
   portfolio = [];
+  abcd = {"BTC" : '$3046' , "ETH" : '$274.70'};
+  abcp = {"BTC" : '$228.556' , "ETH" : '$2.70'};
 
   constructor(public navCtrl: NavController, public vfPro : ValueFetchProvider, public popoverCtrl: PopoverController, public trans : TransactProvider) {
     

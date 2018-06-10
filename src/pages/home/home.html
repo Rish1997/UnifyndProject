@@ -16,8 +16,8 @@
   <div *ngIf="segment == 'camera'">
 
 
-    <ion-card height="10px" color="black" class="div-odd" padding-bottom padding-top>
-      <ion-slides>
+    <ion-card height="10px" class="div-odd" padding-bottom padding-top>
+      <ion-slides tappable>
         <ion-slide *ngFor="let option of YourCoins">
           <ion-row>
             <ion-col>
@@ -103,16 +103,15 @@
         <button ion-button (click)="ShowProfits()">Your Profits </button>
       </ion-card-content>
     </ion-card>
-    
-    <ion-card padding>
-        <button ion-button full round color="dark" (click)="changePage()">Today's Headlines?</button>
-    </ion-card>
 
     <ion-card *ngIf="textClick">
       <ion-card-content>
         Running through all your transactions on the go, We continuosly keeps track of your profits and Losses. but that doesn't
         end here, We support you find the tax deductions or other brokerage charges easily.
       </ion-card-content>
+    </ion-card>
+    <ion-card padding>
+        <button ion-button full round color="dark" (click)="changePage()">Today's Headlines?</button>
     </ion-card>
     <ion-card>
       <ion-card-header>Some Insights</ion-card-header>
@@ -137,7 +136,9 @@
     <ion-card *ngFor="let currency of portfolio">
       <ion-card-header>{{currency}}</ion-card-header>
       <ion-card-content>
-        Volume : {{personData['portfolio'][currency]}}
+        <li>Volume : {{personData['portfolio'][currency]}}</li>
+        <li>Total Spending : {{abcd[currency]}}</li>
+        <li>Total Profit : {{abcp[currency]}}</li>
       </ion-card-content>
     </ion-card>
   </div>
