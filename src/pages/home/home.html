@@ -10,22 +10,6 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-toolbar>
-    <ion-segment [(ngModel)]="segment" color="secondary">
-      <ion-segment-button value="camera">
-        <ion-icon name="eye"></ion-icon>
-      </ion-segment-button>
-      <ion-segment-button value="bookmark">
-        <ion-icon name="bookmark"></ion-icon>
-      </ion-segment-button>
-      <ion-segment-button value="book">
-        <ion-icon name="book"></ion-icon>
-      </ion-segment-button>
-      <ion-segment-button value="wallet">
-          <ion-icon name="card"></ion-icon>
-        </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
 </ion-header>
 
 <ion-content>
@@ -70,10 +54,10 @@
                 You Have :
               </td>
             </tr>
-            <tr *ngFor="let coin of YourCoins">
+            <tr *ngFor="let coin of portfolio">
               <td>
                 <li margin-left padding-left>
-                  {{coin.number}} {{coin.type}}
+                    {{personData['portfolio'][coin]}} {{coin}} 
                 </li>
               </td>
             </tr>
@@ -150,9 +134,30 @@
   </div>
   <div *ngIf="segment=='wallet'">
     <h2>Your Portfolio Includes</h2>
-    <ion-card *ngFor="let currencies of portfolio">
-      <ion-card-header>{{currencies}}</ion-card-header>
-      <ion-card-content></ion-card-content>
+    <ion-card *ngFor="let currency of portfolio">
+      <ion-card-header>{{currency}}</ion-card-header>
+      <ion-card-content>
+        Volume : {{personData['portfolio'][currency]}}
+      </ion-card-content>
     </ion-card>
   </div>
+
+  <ion-footer>
+      <ion-toolbar>
+          <ion-segment [(ngModel)]="segment" color="secondary">
+            <ion-segment-button value="camera">
+              <ion-icon name="eye"></ion-icon>
+            </ion-segment-button>
+            <ion-segment-button value="bookmark">
+              <ion-icon name="bookmark"></ion-icon>
+            </ion-segment-button>
+            <ion-segment-button value="book">
+              <ion-icon name="book"></ion-icon>
+            </ion-segment-button>
+            <ion-segment-button value="wallet">
+                <ion-icon name="card"></ion-icon>
+              </ion-segment-button>
+          </ion-segment>
+        </ion-toolbar>
+  </ion-footer>
   
